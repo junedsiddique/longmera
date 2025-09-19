@@ -7,6 +7,7 @@
 #' @param X The matrix of covariates used in the model
 #' @param betas Marginalized regression coefficients
 #' @param var_betas Variance covariance matrix of betas
+#' @param link Link function. Extracted from object
 #'
 #' @return A list of means, SEs, Jacobians, for the two contrasts and their difference
 #' @export

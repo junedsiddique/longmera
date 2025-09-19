@@ -20,7 +20,9 @@ long_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
                       ctrl.contrast0=NULL, ctrl.contrast1=NULL) {
 
   # Error handling
-  if (class(object) != "MixMod"){
+  if (!inherits(object, "MixMod")) {
+    # code if object is not of class "MixMod"
+
     stop("Currently, only objects of type `MixMod' from the
     GLMMadaptive package are supported")
   } else {

@@ -24,6 +24,8 @@ to be averaged over when (NA) calculating a margin for treatment group at baseli
 \item{betas}{Marginalized regression coefficients}
 
 \item{var_betas}{Variance covariance matrix of betas}
+
+\item{link}{Link function. Extracted from object}
 }
 \value{
 A list of means, SEs, Jacobians, for the two contrasts and their difference
