@@ -13,3 +13,5 @@ Imports:
 Depends: 
     R (>= 3.5)
 LazyData: true
+URL: https://github.com/junedsiddique/longmera
+BugReports: https://github.com/junedsiddique/longmera/issues
