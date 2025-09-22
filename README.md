@@ -13,6 +13,15 @@ GLMMadaptive package package to calculate means and their differences
 based on user-specified covariate values (contrasts). Standard errors
 are estimated using the delta method.
 
+## Installation
+
+The development version of the package can be installed from GitHub
+using the **devtools** package:
+
+``` r
+devtools::install_github("junedsiddique/longmera")
+```
+
 ## Basic Features
 
 - The package contains a single function named `long_means()` where the
