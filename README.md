@@ -1,50 +1,62 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# longmera
+# longmera: An R package for calculating means from longitudinal regression models
 
-<!-- badges: start -->
-<!-- badges: end -->
+## Description
 
-longmera stands for LOngitudinal MEans from Regression Analyses
+<strong>longmera</strong> stands for LOngitudinal MEans from Regression
+Analysis and is a package calculating means from longitudinal
+generalized linear models. As currently implemented, the package uses
+output from generalized linear mixed-effects models fit using the
+GLMMadaptive package package to calculate means and their differences
+based on user-specified covariate values (contrasts). Standard errors
+are estimated using the delta method.
 
-## Installation
+## Basic Features
 
-You can install the development version of longmera like so:
+- The package contains a single function named `long_means()` where the
+  only required arguments are `object`, an object of class MixMod and
+  one contrast statement.
+
+- Up to four contrasts can be specified: two treatment conditions at two
+  time points.
+
+- Based on the number and type of contrasts specified, the function will
+  also calculate the difference in means for the same condition at two
+  time points, the difference in means between two conditions at the
+  same time point, and the difference in change between two treatment
+  conditions.
+
+## Basic Use
+
+Let `y` denote an binary outcome, `tx` an indicator variable for
+treatment group, `time` a continuous covariates for time, `txtime` the
+treatment by time interaction, and `id` a unique variable for study
+participant. A random intercept and slope mixed-effects logistic
+regression model model is fit using the glmmAdaptive package
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
+library(GLMMadaptive)
 library(longmera)
-## basic example code
+logit.fit <- mixed_model(fixed = y ~ tx + time + txtime, 
+                   random = ~ time | id, data = DF,
+                   family = binomial())
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+Using the logit.fit object, we can calculate the mean (probability) of
+`y` for various levels of `tx` and \`time
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+tx.contrast0=c(1, 1, 0, 0) # tx time 0
+tx.contrast1=c(1, 1, 4, 4) # tx time 4
+
+ctrl.contrast0=c(1, 0, 0, 0) # ctrl time 0
+ctrl.contrast1=c(1, 0, 4, 0) # ctrl time 4
+
+
+output <- long_means(logit.fit, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+                   ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
+
+output
 ```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
