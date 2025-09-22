@@ -15,7 +15,8 @@ long_means(
 }
 \arguments{
 \item{object}{An object of type "MixMod" that is obtained from the
-GLMMadaptive package}
+GLMMadaptive package or an object of type "geeglm" that is obtained
+from the gee package.}
 
 \item{tx.contrast0}{A vector specifying fixed values of covariates and variables
 to be averaged over when (NA) calculating a margin for treatment group at baseline.

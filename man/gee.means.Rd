@@ -2,7 +2,7 @@
 % Please edit documentation in R/gee_means_function.R
 \name{gee.means}
 \alias{gee.means}
-\title{Calculate margins and their differences from longitudinal mixed-effects regression models}
+\title{Calculate margins and their differences from longitudinal GEE regression models}
 \usage{
 gee.means(
   object,
@@ -13,8 +13,8 @@ gee.means(
 )
 }
 \arguments{
-\item{object}{An object of type "MixMod" that is obtained from the
-GLMMadaptive package}
+\item{object}{An object of type "geeglm" that is obtained from the
+geepack package}
 
 \item{tx.contrast0}{A vector specifying fixed values of covariates and variables
 to be averaged over when (NA) calculating a margin for treatment group at baseline.
@@ -33,5 +33,5 @@ also calculated. If all 4 contrasts are specified, the difference in differences
 is also calculated.
 }
 \description{
-Calculate margins and their differences from longitudinal mixed-effects regression models
+Calculate margins and their differences from longitudinal GEE regression models
 }

@@ -1,7 +1,7 @@
-#' Calculate margins and their differences from longitudinal mixed-effects regression models
+#' Calculate margins and their differences from longitudinal GEE regression models
 #'
-#' @param object An object of type "MixMod" that is obtained from the
-#' GLMMadaptive package
+#' @param object An object of type "geeglm" that is obtained from the
+#' geepack package
 #' @param tx.contrast0 A vector specifying fixed values of covariates and variables
 #' to be averaged over when (NA) calculating a margin for treatment group at baseline.
 #' Must be the same length as the coefficient vector from the object model.
