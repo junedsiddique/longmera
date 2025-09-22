@@ -15,7 +15,7 @@
 #' is also calculated.
 #' @export
 #'
-mix.means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
+mix_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
                       ctrl.contrast0=NULL, ctrl.contrast1=NULL) {
 
   # Error handling
