@@ -1,0 +1,78 @@
+---
+title: "Using the longmera package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the longmera package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(longmera)
+```
+
+# Package overview
+
+The **longmera** package is specifically designed to calculate means from generalized linear models
+of longitudinal data. In these models, users are interested in calculating means at different time points,
+differences of means between time points, means by different (treatment) groups, differences of means between group. Currently, the longmera package can handle objects from the following types of longitudinal models:
+
+- GEE models fit using the **geepack* package
+- Generalized linear mixed-effects models fit using the **GLMMadaptive** package
+
+The choice of which model to use will depend on the user. In general, GEE models provide population level fixed effects while GLMMs provide subject-specific fixed effects that condition on the random effects. SOMETHING HERE ABOUT MISSING DATA AND INTEGRATING OUT RANDOM EFFECTS.
+
+## Generalized linear mixed-effects models
+
+
+```{r, eval = FALSE}
+library(GLMMadaptive)
+
+# Mixed-effects model no covariates
+fm1 <- mixed_model(fixed = quit ~ group + time + grouptime, 
+                   random = ~ time | id, data = gruder,
+                   family = binomial())
+
+# Time 0 and Time 4 contrasts
+tx.contrast0=c(1, 1, 0, 0) # tx time 0
+tx.contrast1=c(1, 1, 4, 4) # tx time 4
+
+ctrl.contrast0=c(1, 0, 0, 0) #ctrl time 0
+ctrl.contrast1=c(1, 0, 4, 0) #ctrl time 4
+
+# Mixed-effects means
+mixed.output1 <- long_means(fm1, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+                     ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
+mixed.output1
+```
+
+## Generalized Estimating Equations (GEE) models
+
+```{r, eval = FALSE}
+library(geepack)
+
+# GEE model, no covariates
+mod1 <- geeglm(quit ~ group + time + grouptime, id=id, 
+               data=gruder, corstr="unstructured", family=binomial())
+
+# Time 0 and Time 4 contrasts
+tx.contrast0=c(1, 1, 0, 0) # tx time 0
+tx.contrast1=c(1, 1, 4, 4) # tx time 4
+
+ctrl.contrast0=c(1, 0, 0, 0) #ctrl time 0
+ctrl.contrast1=c(1, 0, 4, 0) #ctrl time 4
+
+# GEE means
+gee.output1 <- long_means(mod1, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+                     ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
+gee.output1
+```
+
+

@@ -11,9 +11,12 @@ RoxygenNote: 7.3.2
 Imports: 
     GLMMadaptive
 Suggests:
-    geepack
+    geepack,
+    knitr,
+    rmarkdown
 Depends: 
     R (>= 3.5)
 LazyData: true
 URL: https://github.com/junedsiddique/longmera
 BugReports: https://github.com/junedsiddique/longmera/issues
+VignetteBuilder: knitr
