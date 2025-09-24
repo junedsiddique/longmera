@@ -24,13 +24,19 @@ The **longmera** package is specifically designed to calculate means from genera
 of longitudinal data. In these models, users are interested in calculating means at different time points,
 differences of means between time points, means by different (treatment) groups, differences of means between group. Currently, the longmera package can handle objects from the following types of longitudinal models:
 
-- GEE models fit using the **geepack* package
-- Generalized linear mixed-effects models fit using the **GLMMadaptive** package
+- GEE models fit using the `geepack` package
+- Generalized linear mixed-effects models fit using the `GLMMadaptive` package
 
 The choice of which model to use will depend on the user. In general, GEE models provide population level fixed effects while GLMMs provide subject-specific fixed effects that condition on the random effects. SOMETHING HERE ABOUT MISSING DATA AND INTEGRATING OUT RANDOM EFFECTS.
 
-## Generalized linear mixed-effects models
+# Generalized linear mixed-effects models
 
+## Mixed-effects logistic regression
+Let $y_{ij}$ be a binary outcome on participant $i$ at time $j$. Let $time_{j}$ be the time of measurement for participant $i$ at time $j$. Finally, let $tx_{i}$ be an indicator for whether participant $i$ belongs to the treatment ($tx_{i}=1$) or control condition ($tx_{i}=0$). A mixed effect logistic regression model for these data is:
+$$log\left(\frac{p_{ij}}{1-p_{ij}}\right) = \beta_{0} + \beta_{1}tx_{i} + \beta_{2}time_{j} + 
+\beta_{3}(tx_{i} \times time_{j}) + \nu_{i0} + \nu_{i1}time_{j}$$
+
+where $p_{ij}=\mbox{Pr}(y_{ij}=1)$ and $\nu_{i0}$ and $\nu_{i0}$ are subject-specific random intercept and slope terms, respectively.
 
 ```{r, eval = FALSE}
 library(GLMMadaptive)

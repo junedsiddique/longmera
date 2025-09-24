@@ -5,13 +5,13 @@
 
 ## Description
 
-<strong>longmera</strong> stands for LOngitudinal MEans from Regression
-Analysis and is a package calculating means from longitudinal
-generalized linear models. As currently implemented, the package uses
-output from generalized linear mixed-effects models fit using the
-GLMMadaptive package package to calculate means and their differences
-based on user-specified covariate values (contrasts). Standard errors
-are estimated using the delta method.
+<strong>longmera</strong> is an R package for calculating means from
+longitudinal generalized linear models. As currently implemented, the
+package uses output from generalized linear mixed-effects models fit
+using the **GLMMadaptive** package or generalized estimating equation
+(GEE) models fit using the **geepack** package to calculate means and
+their differences based on user-specified covariate values (contrasts).
+Standard errors are estimated using the delta method.
 
 ## Installation
 
@@ -25,8 +25,8 @@ devtools::install_github("junedsiddique/longmera")
 ## Basic Features
 
 - The package contains a single function named `long_means()` where the
-  only required arguments are `object`, an object of class MixMod and
-  one contrast statement.
+  only required arguments are `object`, an object of class MixMod or
+  glmgee and one contrast statement.
 
 - Up to four contrasts can be specified: two treatment conditions at two
   time points.
@@ -39,21 +39,23 @@ devtools::install_github("junedsiddique/longmera")
 
 ## Basic Use
 
-Let `y` denote an binary outcome, `tx` an indicator variable for
-treatment group, `time` a continuous covariates for time, `txtime` the
-treatment by time interaction, and `id` a unique variable for study
-participant. A random intercept and slope mixed-effects logistic
-regression model model is fit using the glmmAdaptive package
+We illustrate with the gruder data set that is installed with the
+package. Let `quit` denote an binary outcome, `group` an indicator
+variable for treatment group, `time` a continuous covariate for time,
+`grouptime` the treatment by time interaction, and `id` a unique
+variable for study participant. A random intercept and slope
+mixed-effects logistic regression model model is first fit using the
+glmmAdaptive package
 
 ``` r
 library(GLMMadaptive)
 library(longmera)
-logit.fit <- mixed_model(fixed = y ~ tx + time + txtime, 
-                   random = ~ time | id, data = DF,
+logit.mix <- mixed_model(fixed = quit ~ group + time + grouptime, 
+                   random = ~ time | id, data = gruder,
                    family = binomial())
 ```
 
-Using the logit.fit object, we can calculate the mean (probability) of
+Using the logit.mix object, we can calculate the mean (probability) of
 `y` for various levels of `tx` and \`time
 
 ``` r
@@ -64,8 +66,26 @@ ctrl.contrast0=c(1, 0, 0, 0) # ctrl time 0
 ctrl.contrast1=c(1, 0, 4, 0) # ctrl time 4
 
 
-output <- long_means(logit.fit, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+mix.means <- long_means(logit.fit, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
                    ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
 
-output
+mix.means
+```
+
+To calculate means using a GEE logistic regression model with the same
+contrasts, we first fit the model using **geepack**
+
+``` r
+library(geepack)
+logit.gee <- geeglm(quit ~ group + time + grouptime, id=id, 
+             data=gruder, corstr="unstructured", family=binomial())
+```
+
+And then run the `long_means()` function using the logit.gee object
+
+``` r
+gee.means <- long_means(logit.gee, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+                        ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
+
+gee.means
 ```
