@@ -7,6 +7,7 @@ regression models}
 \usage{
 long_means(
   object,
+  marginals = NULL,
   tx.contrast0 = NULL,
   tx.contrast1 = NULL,
   ctrl.contrast0 = NULL,
@@ -17,6 +18,10 @@ long_means(
 \item{object}{An object of type "MixMod" that is obtained from the
 GLMMadaptive package or an object of type "geeglm" that is obtained
 from the gee package.}
+
+\item{marginals}{An optional object of type "m_coefs" that is extracted
+from a "MixMod" object using the marginal_coefs() function from
+the GLMMadaptive package. See details below.}
 
 \item{tx.contrast0}{A vector specifying fixed values of covariates and variables
 to be averaged over (indicated by NA) when calculating a margin for treatment group at baseline.
@@ -38,8 +43,16 @@ is also calculated.
 Calculate margins and their differences from longitudinal mixed-effects or GEE
 regression models
 }
+\details{
+The optional marginals argument is designed when the user is going to
+make repeated calls to the mix_means() function using the same object.
+By including the marginalized coefficient vector and its variance covariance
+matrix as an argument, it will not have to be extracted from the object
+every time the function is called, saving a considerable amount of time.
+}
 \examples{
 # Fit a mixed-effects model using the GLMMadaptive backage
+
 library(GLMMadaptive)
 fm1 <- mixed_model(fixed = quit ~ group + time + grouptime + race + tv + manual,
                    random = ~ time | id, data = gruder, family = binomial())

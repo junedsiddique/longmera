@@ -2,6 +2,9 @@
 #'
 #' @param object An object of type "MixMod" that is obtained from the
 #' GLMMadaptive package
+#' @param marginals An optional object of type "m_coefs" that is extracted
+#' from a "MixMod" object using the marginal_coefs() function from
+#' the GLMMadaptive package. See details below.
 #' @param tx.contrast0 A vector specifying fixed values of covariates and variables
 #' to be averaged over when (NA) calculating a margin for treatment group at baseline.
 #' Must be the same length as the coefficient vector from the object model.
@@ -9,19 +12,33 @@
 #' @param ctrl.contrast0 A vector to calculate the margin for the control group at baseline.
 #' @param ctrl.contrast1 A vector to calculate the margin for the control group at follow-up.
 #'
+#' @details
+#' The optional marginals argument is designed when the user is going to
+#' make repeated calls to the mix_means() function using the same object.
+#' By including the marginalized coefficient vector and its variance covariance
+#' matrix as an argument, it will not have to be extracted from the object
+#' every time the function is called, saving a considerable amount of time.
+#'
 #' @return A data frame of margins, their standard errors, z-statistics, and p-values.
 #' If a contrast is specified for both baseline and follow-up, their difference is
 #' also calculated. If all 4 contrasts are specified, the difference in differences
 #' is also calculated.
 #' @export
 #'
-mix_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
+mix_means <- function(object, marginals, tx.contrast0=NULL, tx.contrast1=NULL,
                       ctrl.contrast0=NULL, ctrl.contrast1=NULL) {
 
   # Error handling
   if (is.null(tx.contrast0) & is.null(tx.contrast1)
       & is.null(ctrl.contrast0) & is.null(ctrl.contrast1)){
     stop("At least 1 contrast vector must be specified.")
+  }
+
+  if (!is.null(marginals) & is.null(marginals$var_betas)){
+    stop("marginals object does not contain the
+         variance covariance matrix. Please use the
+         std_error=TRUE option when calling
+         GLMMadaptive::marginal_coefs()")
   }
 
   # Extract link function
@@ -32,7 +49,10 @@ mix_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
   }
 
   # Obtain marginalized coefficients
-  marginals <- GLMMadaptive::marginal_coefs(object, std_errors = TRUE, cores = 1L)
+  if (is.null(marginals)){
+  marginals <- GLMMadaptive::marginal_coefs(object, std_errors = TRUE,
+                                            cores = 1L)
+}
 
   # Extract marginalized coefficients and their covariance
   betas     <- marginals$betas
