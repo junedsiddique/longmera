@@ -21,8 +21,9 @@ library(longmera)
 # Package overview
 
 The **longmera** package is specifically designed to calculate means from generalized linear models
-of longitudinal data. In these models, users are interested in calculating means at different time points,
-differences of means between time points, means by different (treatment) groups, differences of means between group. Currently, the longmera package can handle objects from the following types of longitudinal models:
+of longitudinal data. In these models, users are typically interested in calculating group means at different time points, differences in group means at the same time point
+differences of means between two time points (change), and differences in change between groups. 
+Currently, the longmera package can handle objects from the following types of longitudinal models:
 
 - GEE models fit using the `geepack` package
 - Generalized linear mixed-effects models fit using the `GLMMadaptive` package
