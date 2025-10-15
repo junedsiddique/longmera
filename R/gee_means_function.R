@@ -54,13 +54,13 @@ gee_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
 
   # Calculate test stats and label tx results
   if(sum(!is.null(tx.contrast1), !is.null(tx.contrast0))==2){
-    tx.result[1,1:4] <- calculate_z_statistics(tx.output$c1$mean.prob,
+    tx.result[1,1:6] <- calculate_z_statistics(tx.output$c1$mean.prob,
                                                tx.output$c1$se)
 
-    tx.result[2,1:4] <- calculate_z_statistics(tx.output$c0$mean.prob,
+    tx.result[2,1:6] <- calculate_z_statistics(tx.output$c0$mean.prob,
                                                tx.output$c0$se)
 
-    tx.result[3,1:4] <- calculate_z_statistics(tx.output$diff.prob,
+    tx.result[3,1:6] <- calculate_z_statistics(tx.output$diff.prob,
                                                tx.output$diff.se)
     row.names(tx.result) <- c("Tx Contrast 1", "Tx Contrast 0", "Tx Change")
 
@@ -86,13 +86,13 @@ gee_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
 
   # calculate test stats and label control results
   if(sum(!is.null(ctrl.contrast1), !is.null(ctrl.contrast0))==2){
-    ctrl.result[1,1:4] <- calculate_z_statistics(ctrl.output$c1$mean.prob,
+    ctrl.result[1,1:6] <- calculate_z_statistics(ctrl.output$c1$mean.prob,
                                                  ctrl.output$c1$se)
 
-    ctrl.result[2,1:4] <- calculate_z_statistics(ctrl.output$c0$mean.prob,
+    ctrl.result[2,1:6] <- calculate_z_statistics(ctrl.output$c0$mean.prob,
                                                  ctrl.output$c0$se)
 
-    ctrl.result[3,1:4] <- calculate_z_statistics(ctrl.output$diff.prob,
+    ctrl.result[3,1:6] <- calculate_z_statistics(ctrl.output$diff.prob,
                                                  ctrl.output$diff.se)
     row.names(ctrl.result) <- c("Ctrl Contrast 1", "Ctrl Contrast 0", "Ctrl Change")
   } else if (!is.null(ctrl.contrast0)) {
@@ -113,7 +113,7 @@ gee_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
                                X=X, betas=betas, var_betas=var_betas, link=model.link)
     base.result <- data.frame()
 
-    base.result[1,1:4] <- calculate_z_statistics(base.output$diff.prob,
+    base.result[1,1:6] <- calculate_z_statistics(base.output$diff.prob,
                                                  base.output$diff.se)
     row.names(base.result) <- c("Time 0: Tx - Ctrl")
   } else {
@@ -126,7 +126,7 @@ gee_means <- function(object, tx.contrast0=NULL, tx.contrast1=NULL,
                                 X=X, betas=betas, var_betas=var_betas, link=model.link)
     time1.result <- data.frame()
 
-    time1.result[1,1:4] <- calculate_z_statistics(time1.output$diff.prob,
+    time1.result[1,1:6] <- calculate_z_statistics(time1.output$diff.prob,
                                                   time1.output$diff.se)
     row.names(time1.result) <- c("Time 1: Tx - Ctrl")
   } else {
