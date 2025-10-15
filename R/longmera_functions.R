@@ -131,7 +131,7 @@ calculate_derivative <- function(link, pred) {
 #' @param mean Mean value
 #' @param se Standard Error
 #'
-#' @return Vector of mean, SE, z statistic, and p-value
+#' @return Vector of mean, SE, z statistic, 95% CI, and p-value
 #' @export
 #'
 #' @keywords internal
@@ -139,11 +139,17 @@ calculate_z_statistics <- function(mean, se) {
 
   z <- mean/se
 
+  LowerCI <- mean - (1.96*se)
+  UpperCI <- mean + (1.96*se)
+
   pval=2*stats::pnorm(-abs(z))
   nice.pval <- format.pval(pval, eps = 0.001, digits = 3)
 
-  cmat <- data.frame(cbind(round(mean,4), round(se,4), round(z,4), nice.pval))
-  colnames(cmat) <- c("Estimate", "Std.Err", "z-value", "p-value")
+  cmat <- data.frame(cbind(round(mean,4), round(se,4), round(z,4),
+                           round(LowerCI, 4), round(UpperCI, 4), nice.pval))
+
+  colnames(cmat) <- c("Estimate", "Std.Err", "z-value",
+                      "2.5%", "97.5%", "p-value")
 
   cmat
 }

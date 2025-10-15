@@ -12,7 +12,7 @@ calculate_z_statistics(mean, se)
 \item{se}{Standard Error}
 }
 \value{
-Vector of mean, SE, z statistic, and p-value
+Vector of mean, SE, z statistic, 95\% CI, and p-value
 }
 \description{
 Calculate z-statistics
