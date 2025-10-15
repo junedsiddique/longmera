@@ -69,7 +69,7 @@ ctrl.contrast0=c(1, 0, 0, 0) # ctrl time 0
 ctrl.contrast1=c(1, 0, 4, 0) # ctrl time 4
 
 
-mix.means <- long_means(logit.fit, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
+mix.means <- long_means(logit.mix, tx.contrast0=tx.contrast0, tx.contrast1=tx.contrast1,
                    ctrl.contrast0=ctrl.contrast0, ctrl.contrast1=ctrl.contrast1)
 
 mix.means
